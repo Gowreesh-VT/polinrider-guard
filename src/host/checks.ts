@@ -1,7 +1,7 @@
 import type { Sys } from "./sys.js";
 import { join } from "./sys.js";
 import type { HostFinding } from "./types.js";
-import { DROPPER_FILES, IOC_IPS, SECRET_FILE_NAME } from "./ioc.js";
+import { DROPPER_DIRS, DROPPER_FILES, HISTORY_TERMS, IOC_IPS, SECRET_FILE_NAME } from "./ioc.js";
 import { scan } from "../core/scan.js";
 import { redact } from "../safe.js";
 import type { ScanFile } from "../core/types.js";
@@ -194,6 +194,27 @@ export const droppers: Check = {
       for (const e of await sys.list(dir))
         if (!e.dir && DROPPER_FILES.includes(e.name)) out.push(f(this.id, "high", `${e.name} found`, join(dir, e.name)));
     }
+    const bases = [sys.home, ...(sys.platform === "win32" ? ["APPDATA", "LOCALAPPDATA", "TEMP"].map((n) => sys.env(n)).filter((b): b is string => !!b) : [])];
+    for (const base of bases)
+      for (const name of DROPPER_DIRS)
+        if (await sys.exists(join(base, name)))
+          out.push(f(this.id, "medium", `${name} exists: a public report lists this hidden folder as a dropper location; inspect what is in it`, join(base, name)));
+    return { findings: out };
+  },
+};
+
+// ---- shell history --------------------------------------------------------------------
+export const shellHistory: Check = {
+  id: "history",
+  label: "Shell history mentions of the malware",
+  async run(sys) {
+    const out: HostFinding[] = [];
+    const files = [".zsh_history", ".bash_history", ".local/share/fish/fish_history", "AppData/Roaming/Microsoft/Windows/PowerShell/PSReadLine/ConsoleHost_history.txt"];
+    for (const file of files) {
+      const text = await sys.readText(join(sys.home, file), 4_000_000);
+      const line = text?.split("\n").find((l) => HISTORY_TERMS.test(l));
+      if (line) out.push(f(this.id, "medium", "shell history contains a command tied to the malware (past exposure)", `${file}: ${line.trim().slice(0, 120)}`));
+    }
     return { findings: out };
   },
 };
@@ -298,4 +319,4 @@ export const exposure: Check = {
   },
 };
 
-export const CHECKS: Check[] = [hiddenNodeModules, processes, network, persistence, droppers, editorSettings, npmGlobal, projects, exposure];
+export const CHECKS: Check[] = [hiddenNodeModules, processes, network, persistence, droppers, shellHistory, editorSettings, npmGlobal, projects, exposure];

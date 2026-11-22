@@ -82,6 +82,19 @@ describe("host check", () => {
     expect(r.findings.some((f) => f.check === "droppers")).toBe(true);
   });
 
+  it("flags a hidden dropper folder in the home directory as a warning", async () => {
+    const r = await run({ files: { "/home/u/.n2/x.js": "1" } });
+    const hit = r.findings.find((f) => f.check === "droppers");
+    expect(hit?.severity).toBe("medium"); expect(r.verdict).toBe("suspicious");
+  });
+
+  it("flags shell history that mentions the malware's endpoints or files", async () => {
+    const r = await run({ files: { "/home/u/.zsh_history": ": 1:0;ls\n: 2:0;cd app && node init && npm run dev\n" } });
+    expect(r.findings.some((f) => f.check === "history")).toBe(true);
+    const clean = await run({ files: { "/home/u/.zsh_history": ": 1:0;git status\n: 2:0;npm run dev\n" } });
+    expect(clean.findings.some((f) => f.check === "history")).toBe(false);
+  });
+
   it("calls an infected project 'suspicious', not a compromised machine", async () => {
     const r = await run({ files: { "/home/u/Documents/app/package.json": '{"scripts":{"dev":"node init && next dev"}}' } });
     expect(r.verdict).toBe("suspicious");

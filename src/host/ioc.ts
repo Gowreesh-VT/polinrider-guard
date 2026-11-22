@@ -28,4 +28,16 @@ export const IOC_IPS = ["95.135.181.84"];
 /** Files the malware drops or runs. */
 export const DROPPER_FILES = ["temp_auto_" + "push.bat", "config.bat"];
 
+/**
+ * Hidden folders a public report lists as dropper locations in the home folder (and, on Windows, in
+ * APPDATA, LOCALAPPDATA and TEMP). Unverified here: names like these can be legitimate, so a hit only
+ * raises a warning to inspect the folder.
+ */
+export const DROPPER_DIRS = [".n2", ".npl", ".pyp", ".sysinfo", ".nlp"];
+
+/** Terms that should never appear in a shell history unless someone ran or pasted the malware's commands. */
+export const HISTORY_TERMS = new RegExp(
+  ["vercel\\.app/settings", "default-" + "configuration", "260120\\.vercel", "api\\.trongrid", "aptoslabs",
+   "temp_auto_" + "push", "node init\\b"].join("|"));
+
 export const SECRET_FILE_NAME = /(secret|credential|passwd|password|token|apikey|api[-_]key|private[-_]key)/i;

@@ -41,7 +41,7 @@ have been exposed. Disable with `--no-history`.
 
 Hidden `~/.node_modules`; `node` processes whose own command is a font/`init` file; connections to reported IPs
 (medium, because the addresses are secondhand); launchd, cron, systemd, Windows Run keys, scheduled tasks and shell
-profiles that download and run code; dropper files; VS Code automatic tasks; globally installed reported npm packages;
+profiles that download and run code; dropper files, hidden dropper folders (`~/.n2`, `~/.npl`, `~/.pyp`, `~/.sysinfo`, `~/.nlp`; medium, unverified) and shell history lines tied to the malware (medium); VS Code automatic tasks; globally installed reported npm packages;
 infected project folders. A separate list shows credentials a stealer could have read.
 
 Verdict: **likely infected** needs a host-level high finding. Infected projects alone do not make the machine

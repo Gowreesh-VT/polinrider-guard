@@ -60,7 +60,7 @@ first added each one (the history scan also finds malware that was added and lat
 ### What the computer check looks at
 
 The hidden `~/.node_modules` folder, node processes running font files or `init`, connections to known malicious
-addresses, startup items, cron and shell profiles that download and run code (macOS, Linux, Windows), dropper files,
+addresses, startup items, cron and shell profiles that download and run code (macOS, Linux, Windows), dropper files and the hidden folders a public report lists as dropper locations (`~/.n2`, `~/.npl`, ...), shell history entries tied to the malware,
 VS Code automatic tasks, reported malicious npm packages, and infected project folders. It also lists credentials a
 stealer could read. **A clear result only means nothing was found right now**: this malware can run once, steal what it
 can and remove itself.
