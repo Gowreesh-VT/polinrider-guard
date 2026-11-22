@@ -1,0 +1,40 @@
+{
+  "name": "gitward",
+  "version": "0.1.0",
+  "description": "Detect, clean and monitor PolinRider supply-chain malware in repos and on your computer",
+  "type": "module",
+  "bin": {
+    "gitward": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "vitest run",
+    "dev": "tsc -p . --watch",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gowreesh-VT/gitward.git"
+  },
+  "keywords": [
+    "security",
+    "malware",
+    "supply-chain",
+    "github",
+    "polinrider",
+    "scanner"
+  ],
+  "author": "Gowreesh V T"
+}
