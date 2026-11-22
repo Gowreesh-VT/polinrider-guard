@@ -87,7 +87,7 @@ describe("media and fonts", () => {
     expect(trailingBytes(".png", png(Buffer.alloc(40, 65)))).toBe(40);
   });
   it("flags code appended to an image, not a clean image or harmless trailing bytes", () => {
-    expect(has("logo.png", png(Buffer.from(`\n;${E}(atob("x"));` + " ".repeat(40))), "media-trailing-code:high")).toBe(true);
+    expect(has("logo.png", png(Buffer.from(`\n;${E}(${A}("x"));` + " ".repeat(40))), "media-trailing-code:high")).toBe(true);
     expect(sev("logo.png", png())).toEqual([]);
     expect(sev("logo.png", png(Buffer.alloc(100, 0)))).toEqual([]);
   });
@@ -126,7 +126,7 @@ describe("hostile input (the tool reads untrusted repositories)", () => {
   const MB = 1_400_000;
   const inputs: [string, string][] = [
     ["curl-repeat", "curl ".repeat(MB / 5)], ["node-repeat", "node ".repeat(MB / 5)], ["spaces", " ".repeat(MB)],
-    ["letters", "a".repeat(MB)], ["hex-ident", "_0x1234 ".repeat(MB / 8)], ["eval-open", "eval(".repeat(MB / 5)],
+    ["letters", "a".repeat(MB)], ["hex-ident", "_0x1234 ".repeat(MB / 8)], [`${E}-open`, `${E}(`.repeat(MB / 5)],
     [`${A}-open`, `${A}(`.repeat(MB / 5)], ["pad-then-x", "a" + " ".repeat(MB / 2) + "b".repeat(MB / 2)],
     ["json-ish", '{"scripts":{' + '"a":"node x",'.repeat(MB / 13)], ["backslashes", "\\x41".repeat(MB / 4)],
     ["pipes", "curl x | ".repeat(MB / 9)], ["fromCharCode", "String.fromCharCode(".repeat(MB / 20)],

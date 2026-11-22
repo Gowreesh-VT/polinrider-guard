@@ -98,7 +98,7 @@ if (cmd === "report") {
   }
   if (!resolved.targets.length) {
     console.error("usage: gitward report [--account LOGIN ... | --all-accounts] [--user NAME ...] [--repo owner/name ...]\n" +
-      "                    [--exclude owner/ ...] [--ignore LOGIN ...] [--skip-forks] [--concurrency N] [--out DIR]");
+      "                    [--exclude owner/ ...] [--ignore LOGIN ...] [--skip-forks] [--quick] [--concurrency N] [--out DIR]");
     process.exit(2);
   }
   console.error(`Scanning ${resolved.targets.length} repo(s)...`);
@@ -110,6 +110,7 @@ if (cmd === "report") {
     ignoreActors: [...resolved.accounts, ...opt("ignore")],
     concurrency: Number(opt("concurrency")[0] ?? 4),
     history: !args.includes("--no-history"),
+    quick: args.includes("--quick"),
     onProgress: (d, n, r) => process.stderr.write(`\r[${d}/${n}] ${r.slice(0, 60).padEnd(60)}`),
   });
   process.stderr.write("\n");

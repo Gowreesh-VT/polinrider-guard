@@ -4,6 +4,8 @@
    `api.github.com` and to git through environment variables, never on a command line.
 2. **Mirrors.** Each repo is cloned bare into `~/.cache/gitward/repos` (folder mode 0700) and refreshed with
    fetch. Git is run with `core.fsmonitor`, hooks, pager and external protocols disabled so a hostile repo cannot run code.
+   `--quick` skips the mirror: it does a shallow clone (`--depth 1`, all branches) into a temporary folder that is
+   deleted afterwards. It is much faster and uses little disk, but cannot see old history or the commit that first added a file.
 3. **Scan.** Every branch tip is read straight from git objects (nothing is checked out or executed). Identical blobs
    on many branches are scanned once. Rules are bounded so adversarial files cannot stall the scan (fuzz tests).
 4. **Attribution.** `git log --find-object` finds the commit that first introduced each blob. GitHub's activity API

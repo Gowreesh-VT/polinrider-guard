@@ -38,6 +38,9 @@ gitward report --account me --exclude some-org/
 gitward report --repo owner/name
 gitward report --user someone
 
+# Faster, shallower scan: newest commit of each branch only, nothing kept on disk (no history scan, no "first added")
+gitward report --all-accounts --quick
+
 # 3. Remove the malware. Dry run by default: it prints exactly what it would change.
 gitward clean --all-accounts
 gitward clean --all-accounts --apply

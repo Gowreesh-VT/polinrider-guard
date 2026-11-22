@@ -1,6 +1,6 @@
 import { GitHub } from "../github/client.js";
 import { explainForcePush, fetchForcePushes, type AmendEvidence } from "../github/forcepush.js";
-import { ensureMirror } from "../sync.js";
+import { ensureMirror, withShallowClone } from "../sync.js";
 import { firstIntroduction, scanRepoBranches } from "../sources/git.js";
 import { scanHistory } from "../sources/history.js";
 import { mapPool } from "../pool.js";
@@ -15,6 +15,8 @@ export interface BuildOptions {
   forcePushDays?: number;
   /** look through old commits for the malware's strings (slower); default on */
   history?: boolean;
+  /** newest commit of each branch only, no cache: fast, but no history scan or "first added" */
+  quick?: boolean;
   concurrency?: number;
   onProgress?: (done: number, total: number, repo: string) => void;
 }
@@ -23,10 +25,17 @@ const LOW_BUDGET = 150;
 
 export async function buildRepoReport(t: Target, opts: BuildOptions, gh: GitHub, cache: Map<string, AmendEvidence | undefined>): Promise<RepoReport> {
   const notes: string[] = [];
-  const dir = await ensureMirror(t.repo, t.token);
-  const findings = await scanRepoBranches(dir);
-  const views = [];
-  for (const f of findings) views.push({ ...f, introduced: await firstIntroduction(dir, f.blob) });
+  const quick = opts.quick === true;
+  const scanned = async (dir: string) => {
+    const findings = await scanRepoBranches(dir);
+    const out = [];
+    for (const f of findings) out.push({ ...f, introduced: quick ? undefined : await firstIntroduction(dir, f.blob) });
+    return { out, history: quick || opts.history === false ? undefined : await scanHistory(dir) };
+  };
+  const { out: views, history } = quick
+    ? await withShallowClone(t.repo, t.token, scanned)
+    : await scanned(await ensureMirror(t.repo, t.token));
+  if (quick) notes.push("Quick scan: only the newest commit of each branch was checked, so old history and \"first added\" are not covered.");
 
   let forcePushes: RepoReport["forcePushes"] = [];
   if (!t.token) {
@@ -49,7 +58,6 @@ export async function buildRepoReport(t: Target, opts: BuildOptions, gh: GitHub,
     }
   }
   attributeIntroductions(views, forcePushes);
-  const history = opts.history === false ? undefined : await scanHistory(dir);
   return {
     repo: t.repo, status: statusOf(views), findings: views, forcePushes, notes, history,
     visibility: t.info ? (t.info.private ? "private" : "public") : undefined,

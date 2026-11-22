@@ -9,9 +9,9 @@ const SHELLISH = /\.(sh|bash|bat|cmd|ps1|ya?ml|py|mk)$|(^|\/)(Makefile|Dockerfil
 
 // Markers taken from known samples. Strong: legitimate code does not contain these.
 const MARKERS = new RegExp([
-  "rmcej" + "%otb%", "Cot%3t" + "=shtP", "_\\$_1e42", "global\\['!'\\]", "global\\['_V'\\]", "global\\[.r.\\]\\s*=\\s*require",
-  "TMfKQEd7TJJa5xNZJZ2Lep838vrzrs7mAP", "TXfxHUet9pJVU1BgVkBAbrES4YUc1nGzcG", "e9b53a7c-2342-4b15-b02d",
-  "var z = '-2914-2'", "eval\\(proxyInfo\\)", "temp_auto_" + "push",
+  "rmcej" + "%otb%", "Cot%3t" + "=shtP", "_\\$_1e" + "42", "global\\['" + "!'\\]", "global\\['" + "_V'\\]", "global\\[.r.\\]\\s*=\\s*require",
+  "TMfKQEd7TJJa5xNZJZ2" + "Lep838vrzrs7mAP", "TXfxHUet9pJVU1BgVkBAbrES4" + "YUc1nGzcG", "e9b53a7c-2342-" + "4b15-b02d",
+  "var z = '-" + "2914-2'", "eval\\(proxyInfo\\)", "temp_auto_" + "push",
   // April 2026 variant
   "function M" + "Dy\\(f\\)", "2\\[gWfGj;<:" + "-93Z\\^C", "m6:tTh\\^D" + "\\)cBz\\?NM\\]",
   "260120\\.vercel\\.app", "default-configuration\\.vercel\\.app", "vscode-settings-(?:bootstrap|config)\\.vercel\\.app",
@@ -24,7 +24,7 @@ export const EVAL = /(?<![\w$.])eval\s*\(\s*[A-Za-z_$][\w$.[\]'"]{0,80}\s*\)|new
 export const NET = /\bfetch\s*\(|https?\.(?:get|request)\s*\(|axios|XMLHttpRequest|node-fetch|\bgot\s*\(|\bcurl\b|\bwget\b|require\(['"](?:https?|net|dns|dgram)['"]\)|from\s+['"](?:https?|node:https?|net)['"]|WebSocket\s*\(|import\(\s*[^)'"`]/;
 export const DECODE = /\batob\s*\(|Buffer\.from\([^)]{0,200}['"]base64['"]\)|b64decode|FromBase64String/;
 const CHILD = /child_process|\bexecSync\s*\(|\bspawnSync?\s*\(|\bexecFileSync?\s*\(|subprocess\.(?:run|Popen|call)|os\.system\s*\(/;
-const CRED = /\.ssh\/(?:id_|known_hosts)|\.aws\/credentials|Login[ ]Data|Local State|wallet\.dat|\.git-credentials|JSON\.stringify\(\s*process\.env\s*\)|Object\.(?:entries|keys)\(\s*process\.env\s*\)[^\n]{0,80}(?:fetch|post|send)|os\.homedir\(\)[^\n]{0,120}(?:readFile|createReadStream)/;
+const CRED = /\.ssh\/(?:id_|known_hosts)|\.aws\/credentials|Login[ ]Data|Local[ ]State|wallet\.dat|\.git-credential[s]|JSON\.stringify\(\s*process\.env\s*\)|Object\.(?:entries|keys)\(\s*process\.env\s*\)[^\n]{0,80}(?:fetch|post|send)|os\.homedir\(\)[^\n]{0,120}(?:readFile|createReadStream)/;
 const EXFIL = /discord(?:app)?\.com\/api\/webhooks|api\.telegram\.org\/bot|pastebin\.com\/raw|transfer\.sh|ngrok(?:-free)?\.(?:io|app|dev)|webhook\.site|requestbin|interact\.sh|burpcollaborator|0x0\.st|anonfiles|gofile\.io/;
 // strong: encoded commands, decode-and-run, living-off-the-land downloaders, download piped to iex
 const SHELL_STRONG = /powershell(?:\.exe)?\s+[^\n]{0,200}-(?:enc|encodedcommand)\b|base64\s+(?:-d|--decode)[^\n]{0,200}\|\s*(?:ba)?sh|certutil\s+-urlcache|mshta\s+https?:|(?:iwr|Invoke-WebRequest|DownloadString)[^\n]{0,200}\|\s*(?:iex|Invoke-Expression)/i;
