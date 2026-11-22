@@ -18,6 +18,10 @@ You need Node.js 20+, git, and the GitHub CLI (`gh`). The tool uses your `gh` lo
    To scan a second account, run `gh auth login` again and sign in as that account. Every signed-in account is used.
 3. **Get the tool**
    ```bash
+   npm install -g @gowreesh_2007/gitward   # installs the `gitward` command
+   ```
+   Or from source:
+   ```bash
    git clone https://github.com/Gowreesh-VT/gitward.git
    cd gitward && npm install && npm run build
    ```

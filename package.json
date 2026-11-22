@@ -1,5 +1,5 @@
 {
-  "name": "gitward",
+  "name": "@gowreesh_2007/gitward",
   "version": "0.1.0",
   "description": "Detect, clean and monitor PolinRider supply-chain malware in repos and on your computer",
   "type": "module",
