@@ -1,6 +1,6 @@
 {
   "name": "polinrider-guard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Detect, clean and monitor PolinRider supply-chain malware in repos and on your computer",
   "type": "module",
   "bin": {

@@ -72,11 +72,14 @@ if (cmd === "clean") {
   }
   const apply = args.includes("--apply");
   console.error(`${apply ? "Cleaning" : "Planning (dry run) for"} ${resolved.targets.length} repo(s)...`);
+  const { makeProgress } = await import("./progress.js");
+  const prog = makeProgress(apply ? "Cleaning" : "Planning");
+  prog.update(0, resolved.targets.length, "");
   const results = await cleanRepos(resolved.targets, {
     apply, pr: !args.includes("--no-pr"),
-    onProgress: (d, n, r) => process.stderr.write(`\r[${d}/${n}] ${r.slice(0, 60).padEnd(60)}`),
+    onProgress: prog.update,
   });
-  process.stderr.write("\n");
+  prog.finish();
   console.log(formatClean(results, apply));
   const failed = results.some((r) => r.results.some((x) => x.status === "failed" || x.verified === false));
   process.exit(failed ? 1 : 0);
@@ -105,15 +108,18 @@ if (cmd === "report") {
   const hostResult = args.includes("--host")
     ? await (async () => { const { realSys } = await import("./host/sys.js"); const { runHostCheck } = await import("./host/index.js"); return runHostCheck(realSys(), { paths: opt("path") }); })()
     : undefined;
+  const { makeProgress } = await import("./progress.js");
+  const prog = makeProgress("Scanning");
+  prog.update(0, resolved.targets.length, "");
   const report = await buildReport({
     targets: resolved.targets, accounts: resolved.accounts,
     ignoreActors: [...resolved.accounts, ...opt("ignore")],
     concurrency: Number(opt("concurrency")[0] ?? 4),
     history: !args.includes("--no-history"),
     quick: args.includes("--quick"),
-    onProgress: (d, n, r) => process.stderr.write(`\r[${d}/${n}] ${r.slice(0, 60).padEnd(60)}`),
+    onProgress: prog.update,
   });
-  process.stderr.write("\n");
+  prog.finish();
   if (hostResult) report.host = hostResult;
   const out = opt("out")[0] ?? "reports";
   mkdirSync(out, { recursive: true });
