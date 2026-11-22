@@ -12,7 +12,7 @@ export class GitHub {
     const h: Record<string, string> = {
       accept: "application/vnd.github+json",
       "x-github-api-version": "2022-11-28",
-      "user-agent": "gitward",
+      "user-agent": "polinrider-guard",
     };
     if (this.token) h.authorization = `Bearer ${this.token}`;
     return h;

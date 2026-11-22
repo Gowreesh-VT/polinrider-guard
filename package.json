@@ -1,10 +1,10 @@
 {
-  "name": "@gowreesh_2007/gitward",
+  "name": "polinrider-guard",
   "version": "0.1.0",
   "description": "Detect, clean and monitor PolinRider supply-chain malware in repos and on your computer",
   "type": "module",
   "bin": {
-    "gitward": "dist/cli.js"
+    "polinrider-guard": "dist/cli.js"
   },
   "files": [
     "dist"
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gowreesh-VT/gitward.git"
+    "url": "git+https://github.com/Gowreesh-VT/polinrider-guard.git"
   },
   "keywords": [
     "security",

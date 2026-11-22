@@ -27,7 +27,7 @@ async function tool(cmd: string, args: string[]): Promise<string | undefined> {
 
 async function scopesFor(token: string): Promise<string[] | undefined> {
   try {
-    const res = await fetch("https://api.github.com/user", { headers: { authorization: `Bearer ${token}`, "user-agent": "gitward" } });
+    const res = await fetch("https://api.github.com/user", { headers: { authorization: `Bearer ${token}`, "user-agent": "polinrider-guard" } });
     return res.ok ? parseScopes(res.headers.get("x-oauth-scopes")) : undefined;
   } catch { return undefined; }
 }
@@ -64,6 +64,6 @@ export async function doctor(platform: NodeJS.Platform = process.platform): Prom
 export function formatDoctor(checks: Check[]): string {
   const L = checks.map((c) => `${c.ok ? "OK  " : "FIX "} ${c.name}: ${c.detail}${c.fix ? `\n       -> ${c.fix}` : ""}`);
   const bad = checks.filter((c) => !c.ok).length;
-  L.push("", bad ? `${bad} thing(s) to fix before scanning your repos.` : "Ready. Try:  gitward report --all-accounts   or   gitward host");
+  L.push("", bad ? `${bad} thing(s) to fix before scanning your repos.` : "Ready. Try:  polinrider-guard report --all-accounts   or   polinrider-guard host");
   return L.join("\n");
 }

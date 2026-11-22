@@ -7,7 +7,7 @@ import { safe } from "../safe.js";
 /** Every commit the cleaner makes is recorded here so it can be reverted later. */
 export interface JournalEntry { repo: string; branch: string; commit: string; parent: string; time: string; undone?: boolean }
 
-export const journalPath = () => process.env.GITWARD_JOURNAL ?? path.join(path.dirname(cacheDir()), "journal.jsonl");
+export const journalPath = () => process.env.POLINRIDER_GUARD_JOURNAL ?? path.join(path.dirname(cacheDir()), "journal.jsonl");
 
 export function readJournal(file = journalPath()): JournalEntry[] {
   try {
@@ -41,7 +41,7 @@ export async function undoEntries(api: WriteApi, entries: JournalEntry[], opts: 
       if (tip !== e.commit) { out.push({ ...base, status: "skipped", note: "branch has newer commits; revert by hand (git revert " + e.commit.slice(0, 8) + ")" }); continue; }
       if (!opts.apply) { out.push({ ...base, status: "skipped", note: "dry run" }); continue; }
       const tree = await api.getCommitTree(e.repo, e.parent);
-      const rev = await api.createCommit(e.repo, `Revert gitward cleanup ${e.commit.slice(0, 8)}\n\nRestores the files exactly as they were before the cleanup commit.`, tree, tip);
+      const rev = await api.createCommit(e.repo, `Revert polinrider-guard cleanup ${e.commit.slice(0, 8)}\n\nRestores the files exactly as they were before the cleanup commit.`, tree, tip);
       await api.updateBranch(e.repo, e.branch, rev);
       markUndone(e.commit, opts.file ?? journalPath());
       out.push({ ...base, status: "reverted", note: `new commit ${rev.slice(0, 8)}` });

@@ -15,7 +15,7 @@ export interface ApplyResult {
 export function commitMessage(plan: BranchPlan): string {
   const rules = [...new Set(plan.changes.flatMap((c) => c.rules))].filter((r) => !r.startsWith("task target"));
   const files = plan.changes.map((c) => `- ${c.kind === "delete" ? "remove" : "clean"} ${c.path}`).join("\n");
-  return `security: remove PolinRider malware (${rules.join(", ") || "task targets"})\n\n${files}\n\nApplied by gitward.`;
+  return `security: remove PolinRider malware (${rules.join(", ") || "task targets"})\n\n${files}\n\nApplied by polinrider-guard.`;
 }
 
 const safeBranch = (b: string) => b.replace(/[^A-Za-z0-9._/-]/g, "-");
@@ -46,10 +46,10 @@ export async function applyBranchPlan(api: WriteApi, plan: BranchPlan, opts: { p
       await api.updateBranch(repo, branch, commit);
     } catch (e) {
       if (!opts.pr || !isProtected(e)) throw e;
-      ref = `gitward/clean-${safeBranch(branch)}-${commit.slice(0, 7)}`;
+      ref = `polinrider-guard/clean-${safeBranch(branch)}-${commit.slice(0, 7)}`;
       await api.createBranch(repo, ref, commit);
       url = await api.createPull(repo, ref, branch, "security: remove PolinRider malware",
-        `Removes the malware files and hooks found on \`${branch}\`.\n\n${plan.changes.map((c) => `- ${c.kind} \`${c.path}\``).join("\n")}\n\nOpened by gitward because \`${branch}\` is protected.`);
+        `Removes the malware files and hooks found on \`${branch}\`.\n\n${plan.changes.map((c) => `- ${c.kind} \`${c.path}\``).join("\n")}\n\nOpened by polinrider-guard because \`${branch}\` is protected.`);
       status = "pull-request";
     }
 

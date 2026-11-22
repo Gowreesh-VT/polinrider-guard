@@ -8,7 +8,7 @@ import { parseRepo } from "./validate.js";
 const run = promisify(execFile);
 
 export const cacheDir = () =>
-  process.env.GITWARD_CACHE ?? path.join(os.homedir(), ".cache", "gitward", "repos");
+  process.env.POLINRIDER_GUARD_CACHE ?? path.join(os.homedir(), ".cache", "polinrider-guard", "repos");
 
 /**
  * Keep a bare mirror of owner/name up to date. The token is handed to git through
@@ -32,7 +32,7 @@ function gitEnv(token?: string): NodeJS.ProcessEnv {
  */
 export async function withShallowClone<T>(rawRepo: string, token: string | undefined, fn: (dir: string) => Promise<T>): Promise<T> {
   const repo = parseRepo(rawRepo);
-  const tmp = mkdtempSync(path.join(os.tmpdir(), "gitward-"));
+  const tmp = mkdtempSync(path.join(os.tmpdir(), "polinrider-guard-"));
   const dir = path.join(tmp, "repo.git");
   try {
     await run("git", ["clone", "-q", "--bare", "--depth", "1", "--no-single-branch", `https://github.com/${repo}.git`, dir], { env: gitEnv(token), maxBuffer: 64 * 1024 * 1024 });

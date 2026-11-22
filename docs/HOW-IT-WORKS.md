@@ -2,7 +2,7 @@
 
 1. **Accounts.** `gh auth token --user NAME` for each signed-in account. The tool never stores a token; it goes to
    `api.github.com` and to git through environment variables, never on a command line.
-2. **Mirrors.** Each repo is cloned bare into `~/.cache/gitward/repos` (folder mode 0700) and refreshed with
+2. **Mirrors.** Each repo is cloned bare into `~/.cache/polinrider-guard/repos` (folder mode 0700) and refreshed with
    fetch. Git is run with `core.fsmonitor`, hooks, pager and external protocols disabled so a hostile repo cannot run code.
    `--quick` skips the mirror: it does a shallow clone (`--depth 1`, all branches) into a temporary folder that is
    deleted afterwards. It is much faster and uses little disk, but cannot see old history or the commit that first added a file.
@@ -14,8 +14,8 @@
 5. **Report.** HTML, Markdown and JSON in `reports/`. Untrusted text (paths, branch names, commit subjects) has
    control characters removed and is escaped.
 6. **Clean.** The fix is planned from the local mirror, one commit per branch via the git trees API, fast-forward only.
-   Protected branch: a `gitward/clean-…` branch plus a pull request. After writing, each file is read back and compared.
+   Protected branch: a `polinrider-guard/clean-…` branch plus a pull request. After writing, each file is read back and compared.
    Edits that would break JSON or leave the pattern are refused and listed as manual. Commits are journaled
-   (`~/.cache/gitward/journal.jsonl`) for `clean --undo`.
+   (`~/.cache/polinrider-guard/journal.jsonl`) for `clean --undo`.
 
 Limits: API 5000 calls/hour signed in, 60 anonymous. The tool is read-only toward your computer and never runs scanned code.

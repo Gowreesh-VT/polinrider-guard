@@ -137,7 +137,7 @@ describe("apply", () => {
     const r = await applyBranchPlan(api, plan(), { pr: true });
     expect(r.status).toBe("pull-request");
     expect(r.url).toContain("/pull/1");
-    expect(api.calls.some((c) => c.startsWith("branch:gitward/clean-feature-"))).toBe(true);
+    expect(api.calls.some((c) => c.startsWith("branch:polinrider-guard/clean-feature-"))).toBe(true);
   });
   it("does not open a PR when --no-pr", async () => {
     const r = await applyBranchPlan(new FakeApi("abc", { protectedBranch: true }), plan(), { pr: false });

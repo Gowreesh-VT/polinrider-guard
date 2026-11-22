@@ -66,7 +66,7 @@ if (cmd === "clean") {
   });
   for (const w of resolved.warnings) console.error(`warning: ${w}`);
   if (!resolved.targets.length) {
-    console.error("usage: gitward clean [--account LOGIN ... | --all-accounts] [--repo owner/name ...] [--exclude owner/ ...] [--apply] [--no-pr]\n" +
+    console.error("usage: polinrider-guard clean [--account LOGIN ... | --all-accounts] [--repo owner/name ...] [--exclude owner/ ...] [--apply] [--no-pr]\n" +
       "       dry run by default; --apply commits the fixes (one commit per branch, never a force-push)");
     process.exit(2);
   }
@@ -93,11 +93,11 @@ if (cmd === "report") {
   });
   for (const w of resolved.warnings) console.error(`warning: ${w}`);
   if (!resolved.targets.length && !resolved.accounts.length && !opt("user").length && !opt("repo").length) {
-    console.error("No GitHub account found. Run `gitward doctor` for setup steps (install gh, then gh auth login).");
+    console.error("No GitHub account found. Run `polinrider-guard doctor` for setup steps (install gh, then gh auth login).");
     process.exit(2);
   }
   if (!resolved.targets.length) {
-    console.error("usage: gitward report [--account LOGIN ... | --all-accounts] [--user NAME ...] [--repo owner/name ...]\n" +
+    console.error("usage: polinrider-guard report [--account LOGIN ... | --all-accounts] [--user NAME ...] [--repo owner/name ...]\n" +
       "                    [--exclude owner/ ...] [--ignore LOGIN ...] [--skip-forks] [--quick] [--concurrency N] [--out DIR]");
     process.exit(2);
   }
@@ -130,7 +130,7 @@ const worktreeOnly = args.includes("--worktree");
 const target = args.slice(1).find((a) => !a.startsWith("--")) ?? ".";
 
 if (cmd !== "scan") {
-  console.log("usage: gitward scan <directory-or-repo> [--worktree]\n       gitward report [--account LOGIN | --all-accounts] [--user NAME] [--repo owner/name] [--host]\n       gitward doctor                      check setup (git, gh, sign-in) and say what to fix\n       gitward host [--path DIR ...]\n       gitward clean [--account LOGIN | --all-accounts] [--repo owner/name] [--apply]\n       gitward clean --undo [--repo owner/name] [--apply]   revert earlier cleanups (dry run without --apply)\n" +
+  console.log("usage: polinrider-guard scan <directory-or-repo> [--worktree]\n       polinrider-guard report [--account LOGIN | --all-accounts] [--user NAME] [--repo owner/name] [--host]\n       polinrider-guard doctor                      check setup (git, gh, sign-in) and say what to fix\n       polinrider-guard host [--path DIR ...]\n       polinrider-guard clean [--account LOGIN | --all-accounts] [--repo owner/name] [--apply]\n       polinrider-guard clean --undo [--repo owner/name] [--apply]   revert earlier cleanups (dry run without --apply)\n" +
     "  git repos are scanned across every branch (and history lookup); --worktree scans files only");
   process.exit(cmd ? 2 : 0);
 }

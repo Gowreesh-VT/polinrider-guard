@@ -1,4 +1,4 @@
-# gitward
+# polinrider-guard
 
 Find, report on and clean **PolinRider** supply-chain malware in your GitHub repositories and on your computer.
 
@@ -18,40 +18,40 @@ You need Node.js 20+, git, and the GitHub CLI (`gh`). The tool uses your `gh` lo
    To scan a second account, run `gh auth login` again and sign in as that account. Every signed-in account is used.
 3. **Get the tool**
    ```bash
-   npm install -g @gowreesh_2007/gitward   # installs the `gitward` command
+   npm install -g polinrider-guard   # installs the `polinrider-guard` command
    ```
    Or from source:
    ```bash
-   git clone https://github.com/Gowreesh-VT/gitward.git
-   cd gitward && npm install && npm run build
+   git clone https://github.com/Gowreesh-VT/polinrider-guard.git
+   cd polinrider-guard && npm install && npm run build
    ```
-   Then `npm link` (or run `node dist/cli.js` instead of `gitward`).
-4. **Check your setup**: `gitward doctor` tells you what is missing and how to fix it.
+   Then `npm link` (or run `node dist/cli.js` instead of `polinrider-guard`).
+4. **Check your setup**: `polinrider-guard doctor` tells you what is missing and how to fix it.
 
 ## Use
 
 ```bash
 # 1. Is this computer affected? Read-only; never runs anything it finds.
-gitward host
+polinrider-guard host
 
 # 2. Scan every repo of every account you are signed in to, with a detailed report
-gitward report --all-accounts --host
+polinrider-guard report --all-accounts --host
 
 # Only some accounts / repos, skip organisations, or scan anyone's public repos (no sign-in needed)
-gitward report --account me --exclude some-org/
-gitward report --repo owner/name
-gitward report --user someone
+polinrider-guard report --account me --exclude some-org/
+polinrider-guard report --repo owner/name
+polinrider-guard report --user someone
 
 # Faster, shallower scan: newest commit of each branch only, nothing kept on disk (no history scan, no "first added")
-gitward report --all-accounts --quick
+polinrider-guard report --all-accounts --quick
 
 # 3. Remove the malware. Dry run by default: it prints exactly what it would change.
-gitward clean --all-accounts
-gitward clean --all-accounts --apply
+polinrider-guard clean --all-accounts
+polinrider-guard clean --all-accounts --apply
 
 # 4. Changed your mind? Revert the cleanup commits made from this machine (also a dry run until --apply)
-gitward clean --undo
-gitward clean --undo --apply
+polinrider-guard clean --undo
+polinrider-guard clean --undo --apply
 ```
 
 Reports are written to `reports/` as `report.html`, `report.md` and `report.json`: findings per branch, the commit that

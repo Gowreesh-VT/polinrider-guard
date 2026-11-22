@@ -19,7 +19,7 @@ export function adviceFor(verdict: Verdict, findings: HostFinding[], exposure: H
     a.push("Rotate every secret that was on this machine: .env files, npm tokens, cloud and database keys, and saved browser passwords.");
     a.push("Do not just delete the files you found: the malware may have set up a startup item. Back up your own files, then reinstall the operating system.");
   }
-  if (findings.some(isProject)) a.push("Projects on disk contain the malware. Do not open them in VS Code until cleaned; run `gitward report` on their repos, or delete the folders and re-clone from a cleaned remote.");
+  if (findings.some(isProject)) a.push("Projects on disk contain the malware. Do not open them in VS Code until cleaned; run `polinrider-guard report` on their repos, or delete the folders and re-clone from a cleaned remote.");
   if (findings.some((f) => f.check === "editor-settings")) a.push('Set "task.allowAutomaticTasks": "off" in your VS Code user settings.');
   if (exposure.length) a.push("If any of the credentials listed under exposure were on this machine while it may have been infected, rotate them.");
   a.push("A clear result only means nothing was found right now. This malware can run once, steal what it can and remove itself, so if you opened an infected project, rotate your credentials anyway.");

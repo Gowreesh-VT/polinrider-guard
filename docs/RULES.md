@@ -37,7 +37,7 @@ are only checked for exact signatures.
 whose current files are clean is reported as history only: the repo is clean now, but anything that ran from it may
 have been exposed. Disable with `--no-history`.
 
-## Computer checks (`gitward host`)
+## Computer checks (`polinrider-guard host`)
 
 Hidden `~/.node_modules`; `node` processes whose own command is a font/`init` file; connections to reported IPs
 (medium, because the addresses are secondhand); launchd, cron, systemd, Windows Run keys, scheduled tasks and shell
@@ -57,5 +57,5 @@ Verdict: **likely infected** needs a host-level high finding. Infected projects 
 ## Scanning this repository
 
 The rule definitions (`src/core/rules`, `src/sources/history.ts`) and tests quote the indicators they detect, so
-`gitward scan` on this repo reports findings in those files. They are not malware. We deliberately have no
+`polinrider-guard scan` on this repo reports findings in those files. They are not malware. We deliberately have no
 "ignore me" marker, because malware could add one too.
