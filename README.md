@@ -80,6 +80,24 @@ revoke sessions, authorized OAuth apps and personal access tokens, regenerate re
 and rotate any secret that was on the machine (`.env` files, npm and cloud keys, saved browser passwords).
 Set `task.allowAutomaticTasks` to `"off"` in VS Code so a repo cannot run code just by being opened.
 
+## Stop it coming back
+
+A cleaned branch can be overwritten again while anyone with write access is still infected or has a stolen token.
+The replacement commit can reuse the author name, parent and timestamp of your cleanup commit, so check who
+force-pushed, not who the commit says wrote it.
+
+1. Ask everyone who force-pushed to stop pushing, run `polinrider-guard host`, and revoke their tokens and SSH keys
+   from a clean device.
+2. Block force-pushes on your branches (branch protection or rulesets), and remove write access for accounts you cannot
+   yet trust. Blocking force-pushes does not stop an infected account from pushing ordinary commits.
+3. Clean, then scan the same repos again a day or two later:
+   `polinrider-guard report --repo owner/name --quick`
+4. Re-clone old local copies, or fetch and reset them to the cleaned branch, before running or pushing from them.
+   Reset discards local changes, so save your own work first and check it for the same signs.
+
+Cleaning adds a new commit and does not rewrite history, so older commits still contain the malware. Do not check
+them out and run them.
+
 ## Notes and limits
 
 - Force-pushes show which account's credentials were used, not who was at the keyboard. The report says "consistent
